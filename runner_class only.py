@@ -71,7 +71,7 @@ def collision_sprite():
 
 pygame.init()
 screen = pygame.display.set_mode((800,400))
-pygame.display.set_caption('Runner')
+pygame.display.set_caption('Harry Potter\'s Dementor Dash')
 clock = pygame.time.Clock()
 test_font = pygame.font.Font('font/Pixeltype.ttf', 50)
 magic_font_30 = pygame.font.Font('font/witches-magic.ttf', 30)
