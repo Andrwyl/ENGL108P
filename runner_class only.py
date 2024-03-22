@@ -80,10 +80,34 @@ magic_font_10 = pygame.font.Font('font/witches-magic.ttf', 10)
 magic_font_20 = pygame.font.Font('font/witches-magic.ttf', 18)
 magic_font_40 = pygame.font.Font('font/witches-magic.ttf', 40)
 
+intro_font_15 = pygame.font.Font('font/introfont.ttf', 15)
 
+
+#screen state variables
 freeze_screen = False
 game_active = False
 trivia_screen = False
+introduction_screen = True
+
+#this is to facilitate the animation onto the screen of the introduction story
+last_update = pygame.time.get_ticks()
+interval = 150
+
+index1 = 0
+index2 = 0
+index3 = 0
+index4 = 0
+
+intro_line1 = "The rumblings have been true.. the Dementors of Azkaban have lost control again!"
+intro_line2 = "These creatures of sadness and despair are preying on all who come in their way.."
+intro_line3 = "As all hope seems lost, and darkness seems destined to envelop all we know and love"
+intro_line4 = "The Boy Who Lived, Lightning, The Chosen One, comes soaring in fearlessly once more..."
+
+
+instructions_screen = False
+
+
+
 start_time = 0
 pause_start = 0
 pause_end = 0
@@ -103,6 +127,7 @@ obstacle_group = pygame.sprite.Group()
 
 sky_surface = pygame.image.load('graphics/hogwarts.png').convert()
 trivia_surface = pygame.image.load('graphics/trivia.png').convert()
+introduction_surface = pygame.image.load('graphics/introduction.png')
 
 # Intro screen
 player_stand = pygame.image.load('graphics/player/player_stand.png').convert_alpha()
@@ -140,7 +165,13 @@ trivia_questions = deepcopy(TRIVIA_QUESTIONS_POOL)
 curr_trivia_question, curr_trivia_ans = choice(list(trivia_questions.items())) #refresh this after every trivia question is answered to get a new one
 trivia_questions.pop(curr_trivia_question)
 
-print(curr_trivia_question)
+
+#this is probably good for blitting text (automates the font, getrect, then blip task)
+def blit_text(text, font,r,g,b,center):
+	text_message = font.render(text,True,(r,g,b))
+	text_message_rect = text_message.get_rect(center = center)
+	screen.blit(text_message,text_message_rect)
+
 
 
 while True:
@@ -152,6 +183,10 @@ while True:
 		if game_active:
 			if event.type == obstacle_timer:
 				obstacle_group.add(Obstacle(choice(['fly'])))
+		
+		elif introduction_screen:
+			if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
+				introduction_screen = False
 
 		elif freeze_screen:
 			if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
@@ -260,6 +295,29 @@ while True:
 		possible_keys = [pygame.K_a, pygame.K_b, pygame.K_c, pygame.K_d]
 		correct_key = curr_trivia_ans[-1] #by convention I'm storing the correct key that the user should press as the last element of the list
 		incorrect_keys = [key for key in possible_keys if key != correct_key]
+	
+	elif introduction_screen:
+		screen.blit(introduction_surface,(0,0))
+
+		now = pygame.time.get_ticks()
+		if (now - last_update > interval):
+			if index1 < len(intro_line1.split()):
+				index1 += 1
+			elif index2 < len(intro_line2.split()):
+				index2 += 1
+			elif index3 < len(intro_line3.split()):
+				index3 += 1
+			elif index4 < len(intro_line4.split()):
+				index4 += 1
+			last_update = now
+
+				
+		blit_text(" ".join(intro_line1.split()[:index1]),intro_font_15,255,255,255,(400,150))
+		blit_text(" ".join(intro_line2.split()[:index2]),intro_font_15,255,255,255,(400,190))
+		blit_text(" ".join(intro_line3.split()[:index3]),intro_font_15,255,255,255,(400,230))
+		blit_text(" ".join(intro_line4.split()[:index4]),intro_font_15,255,255,255,(400,270))
+		blit_text("ENTER to continue",intro_font_15,255,255,255,(700,350))
+
 	
 	
 		
