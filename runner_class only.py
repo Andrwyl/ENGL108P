@@ -77,6 +77,9 @@ clock = pygame.time.Clock()
 test_font = pygame.font.Font('font/Pixeltype.ttf', 50)
 magic_font_30 = pygame.font.Font('font/witches-magic.ttf', 30)
 magic_font_10 = pygame.font.Font('font/witches-magic.ttf', 10)
+magic_font_20 = pygame.font.Font('font/witches-magic.ttf', 18)
+magic_font_40 = pygame.font.Font('font/witches-magic.ttf', 40)
+
 
 freeze_screen = False
 game_active = False
@@ -120,12 +123,14 @@ pygame.time.set_timer(obstacle_timer,1500)
 
 
 #load in trivia questions here
+
+#NOTE: WHEN ADDING TRIVIA QUESTIONS MAKE SURE THEY'RE ALL AROUND THE SAME LENGTH TO ENSURE THEY ALL FIT. ALSO, WE SPLIT INTO 2 LINES BY '.' SO MAKE SURE THERE'S A PERIOD IN EACH QUESTION
 TRIVIA_QUESTIONS_POOL = {
-	"Harry Potter is remembered as a legendary seeker at Hogwarts. How many snitches did Harry catch during his playing years?": ["a) 5 snitches", "b) 2 snitches", "c) 7 snitches", "d) 1 snitch",
+	"Harry Potter is remembered as a legendary seeker at Hogwarts. Select the number of snitches Harry caught while playing.": ["a) 5 snitches", "b) 2 snitches", "c) 7 snitches", "d) 1 snitch",
 	pygame.K_c],
-	"Harry Potter has used his broom in masterful ways to get out of tight situations, which was Harry's first ever broom?": ["a) The Bongo 45", "b) The Nimbus 2000", "c) The Demented Horror", "d) The Firebolt",
+	"Harry Potter has used his broom in masterful ways to get out of tight situations. Select Harry's first broom.": ["a) The Bongo 45", "b) The Nimbus 2000", "c) The Demented Horror", "d) The Firebolt",
 	pygame.K_b],
-	"In his 7th year at Hogwarts, Harry famously ventured off to find Voldemort's Horcruxes, which object was not a Horcrux?" : ["a) Tom Riddle's Diary", "b) The Elder Wand", "c) The Diadem of Ravenclaw", "d) Marvolo Gaunt's Ring",
+	"Harry famously ventured off to find Voldemort's Horcruxes. Select the object that is not a Horcrux." : ["a) Tom Riddle's Diary", "b) The Elder Wand", "c) The Diadem of Ravenclaw", "d) Marvolo Gaunt's Ring",
 																															  pygame.K_b],
 
 }  #we keep this as a constant, since every time we use a question we remove it from the dict in order to prevent repeating questions. When we run out of questions we reload all questions to prevent crash
@@ -135,6 +140,7 @@ trivia_questions = deepcopy(TRIVIA_QUESTIONS_POOL)
 curr_trivia_question, curr_trivia_ans = choice(list(trivia_questions.items())) #refresh this after every trivia question is answered to get a new one
 trivia_questions.pop(curr_trivia_question)
 
+print(curr_trivia_question)
 
 
 while True:
@@ -206,9 +212,14 @@ while True:
 
 		#game over text
 
-		dead_message = magic_font_30.render("PRESS ENTER TO TRY TO REVIVE!",True,(255,255,255))
+		dead_message = magic_font_30.render("PRESS ENTER TO SAME HIM FROM THE KISS!",True,(255,255,255))
 		dead_message_rect = dead_message.get_rect(center = (400,40))
 		screen.blit(dead_message, dead_message_rect)
+
+		you_died = magic_font_40.render("HARRY GOT CAUGHT!",True,(255,255,255))
+		you_died_rect = you_died.get_rect(center = (400,200))
+		screen.blit(you_died,you_died_rect)
+		
 
 
 		
@@ -219,22 +230,27 @@ while True:
 		trivia_message = magic_font_30.render("Answer Correctly to Save Harry!",True,(255,255,255))
 		trivia_message_rect = trivia_message.get_rect(center = (400,50))
 
-		trivia_question = magic_font_10.render(curr_trivia_question,True,(255,255,255))
-		trivia_question_rect = trivia_question.get_rect(center = (400, 100))
+		#For readability, split the question into 2 (deliminator is '.') and have them on separate lines (trivia_question_1 and 2)
+		trivia_question_1 = magic_font_20.render(curr_trivia_question.split('.')[0]+'.',True,(255,255,255))
+		trivia_question_rect_1 = trivia_question_1.get_rect(center = (400, 100))
+
+		trivia_question_2 = magic_font_20.render(curr_trivia_question.split('.')[1]+'?',True,(255,255,255))
+		trivia_question_rect_2 = trivia_question_2.get_rect(center = (400,150))
 
 		
 		screen.blit(trivia_message, trivia_message_rect)
-		screen.blit(trivia_question, trivia_question_rect)
+		screen.blit(trivia_question_1, trivia_question_rect_1)
+		screen.blit(trivia_question_2, trivia_question_rect_2)
 
-		trivia_answer_a = magic_font_10.render(curr_trivia_ans[0],True,(0,0,0))
-		trivia_answer_b = magic_font_10.render(curr_trivia_ans[1],True,(0,0,0))
-		trivia_answer_c = magic_font_10.render(curr_trivia_ans[2],True,(0,0,0))
-		trivia_answer_d = magic_font_10.render(curr_trivia_ans[3],True,(0,0,0))
+		trivia_answer_a = magic_font_10.render(curr_trivia_ans[0],True,(255,255,255))
+		trivia_answer_b = magic_font_10.render(curr_trivia_ans[1],True,(255,255,255))
+		trivia_answer_c = magic_font_10.render(curr_trivia_ans[2],True,(255,255,255))
+		trivia_answer_d = magic_font_10.render(curr_trivia_ans[3],True,(255,255,255))
 
-		trivia_answer_a_rect = trivia_answer_a.get_rect(center = (400, 150))
-		trivia_answer_b_rect = trivia_answer_b.get_rect(center = (400, 200))
-		trivia_answer_c_rect = trivia_answer_c.get_rect(center = (400, 250))
-		trivia_answer_d_rect = trivia_answer_d.get_rect(center = (400, 300))
+		trivia_answer_a_rect = trivia_answer_a.get_rect(center = (400, 200))
+		trivia_answer_b_rect = trivia_answer_b.get_rect(center = (400, 250))
+		trivia_answer_c_rect = trivia_answer_c.get_rect(center = (400, 300))
+		trivia_answer_d_rect = trivia_answer_d.get_rect(center = (400, 350))
 
 		screen.blit(trivia_answer_a, trivia_answer_a_rect)
 		screen.blit(trivia_answer_b, trivia_answer_b_rect)
