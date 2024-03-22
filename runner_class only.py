@@ -144,7 +144,8 @@ start_screen = pygame.image.load('graphics/start_screen.png').convert()
 
 # Timer 
 obstacle_timer = pygame.USEREVENT + 1
-pygame.time.set_timer(obstacle_timer,1500)
+
+
 
 
 #load in trivia questions here
@@ -183,6 +184,8 @@ while True:
 		if game_active:
 			if event.type == obstacle_timer:
 				obstacle_group.add(Obstacle(choice(['fly'])))
+				obstacle_count += 1
+				obstacle_lock = True
 		
 		elif introduction_screen:
 			if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
@@ -222,6 +225,11 @@ while True:
 				start_time = int(pygame.time.get_ticks() / 1000)
 				total_pause = 0
 
+				obstacle_interval = 1200
+				obstacle_count = 0
+				obstacle_lock = False
+				pygame.time.set_timer(obstacle_timer,obstacle_interval)
+
 
 	if game_active:
 		screen.blit(sky_surface,(0,0))
@@ -229,6 +237,14 @@ while True:
 		
 		player.draw(screen)
 		player.update()
+
+		print(obstacle_count, obstacle_interval)
+
+		#update our timer with the score (maybe after every 10, it reduces by 100?)
+		if obstacle_count % 10 == 0 and obstacle_interval > 500 and obstacle_lock:
+			obstacle_interval -= 100
+			pygame.time.set_timer(obstacle_timer,obstacle_interval)
+			obstacle_lock = False
 
 		obstacle_group.draw(screen)
 		obstacle_group.update()
