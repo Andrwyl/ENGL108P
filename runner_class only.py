@@ -3,57 +3,92 @@ from sys import exit
 from random import randint, choice
 from copy import deepcopy
 
-class Player(pygame.sprite.Sprite):
-	def __init__(self):
-		super().__init__()
-		player_walk_1 = pygame.image.load('graphics/player/player_walk_1.png').convert_alpha()
-		player_walk_2 = pygame.image.load('graphics/player/player_walk_2.png').convert_alpha()
-		self.player_walk = [player_walk_1,player_walk_2]
-		#self.player_index = 0
-		#self.player_jump = pygame.image.load('graphics/player/jump.png').convert_alpha()
 
-		self.image = self.player_walk[0]
-		self.rect = self.image.get_rect(midbottom = (80,300))
+class Projectile(pygame.sprite.Sprite):
+    def __init__(self, pos):
+        super().__init__()
+        self.image = pygame.Surface((10, 5))  # Define the size of the projectile
+        self.image.fill((0, 0, 255))  # Color the projectile blue
+        self.rect = self.image.get_rect(center=pos)
+        
+    def update(self):
+        self.rect.x += 10  # Speed of the projectile
+        if self.rect.x > 800:  # Remove the projectile if it goes beyond the screen
+            self.kill()
+
+class Player(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        player_walk_1 = pygame.image.load('graphics/player/player_walk_1.png').convert_alpha()
+        player_walk_2 = pygame.image.load('graphics/player/player_walk_2.png').convert_alpha()
+        self.player_walk = [player_walk_1, player_walk_2]
+        self.image = self.player_walk[0]
+        self.rect = self.image.get_rect(midbottom=(80, 300))
+        self.max_mana = 5  # Maximum mana the player can have.
+        self.mana = self.max_mana  # Current mana starts full.
+
+
+
 		#self.gravity = 0
 
 		#self.jump_sound = pygame.mixer.Sound('audio/jump.mp3')
 		#self.jump_sound.set_volume(0.5)
 
 
-	def update(self):
-		keys = pygame.key.get_pressed()
-		if keys[pygame.K_w] and self.rect.top > 0:
-			self.rect.y -= 8
-		if keys[pygame.K_s] and self.rect.bottom < 400:
-			self.rect.y += 8
+		#self.player_index = 0
+		#self.player_jump = pygame.image.load('graphics/player/jump.png').convert_alpha()
+    def update(self):
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_w] and self.rect.top > 0:
+            self.rect.y -= 8
+        if keys[pygame.K_s] and self.rect.bottom < 400:
+            self.rect.y += 8
+        if keys[pygame.K_a] or keys[pygame.K_LEFT]:  # Move left
+            self.rect.x -= 5  # Adjust speed as needed
+            if self.rect.left < 0:  # Prevent moving out of bounds
+                self.rect.left = 0
+        if keys[pygame.K_d] or keys[pygame.K_RIGHT]:  # Move right
+            self.rect.x += 5  # Adjust speed as needed
+            if self.rect.right > 800:  # Assuming screen width is 800
+                self.rect.right = 800
+
+    # Method for shooting projectiles
+    def shoot(self):
+        if self.mana > 0:
+           projectile = Projectile(self.rect.midtop)
+           projectile_group.add(projectile)
+           self.mana -= 1  # Decrease mana by 1 for each projectile shot
+	
+
+    def regenerate_mana(self, regen_rate):
+        if self.mana < self.max_mana:
+            self.mana += regen_rate
+            self.mana = min(self.mana, self.max_mana)  # Ensure mana doesn't exceed max.
+
+
 
 class Obstacle(pygame.sprite.Sprite):
-	def __init__(self,type):
-		super().__init__()
-		
-		if type == 'fly':
-			fly_1 = pygame.image.load('graphics/fly/fly1.png').convert_alpha()
-			fly_2 = pygame.image.load('graphics/fly/fly2.png').convert_alpha()
-			self.frames = [fly_1,fly_2]
-			y_pos = randint(50, 350)
+    def __init__(self, type):
+        super().__init__()
+        if type == 'fly':
+            fly_1 = pygame.image.load('graphics/fly/fly1.png').convert_alpha()
+            fly_2 = pygame.image.load('graphics/fly/fly2.png').convert_alpha()
+            self.frames = [fly_1, fly_2]
+            y_pos = randint(50, 350)
+        self.animation_index = 0
+        self.image = self.frames[self.animation_index]
+        self.rect = self.image.get_rect(midbottom=(randint(900, 1100), y_pos))
 
-		self.animation_index = 0
-		self.image = self.frames[self.animation_index]
-		self.rect = self.image.get_rect(midbottom = (randint(900,1100),y_pos))
+    def animation_state(self):
+        self.animation_index += 0.1
+        if self.animation_index >= len(self.frames): self.animation_index = 0
+        self.image = self.frames[int(self.animation_index)]
 
-	def animation_state(self):
-		self.animation_index += 0.1 
-		if self.animation_index >= len(self.frames): self.animation_index = 0
-		self.image = self.frames[int(self.animation_index)]
-
-	def update(self):
-		self.animation_state()
-		self.rect.x -= 6
-		self.destroy()
-
-	def destroy(self):
-		if self.rect.x <= -100: 
-			self.kill()
+    def update(self):
+        self.animation_state()
+        self.rect.x -= 6
+        if self.rect.x <= -100:
+            self.kill()
 
 
 def display_score():
@@ -68,6 +103,16 @@ def collision_sprite():
 		#obstacle_group.empty()
 		return False
 	else: return True
+
+def draw_mana_bar(surface, x, y, pct):
+    BAR_LENGTH = 100
+    BAR_HEIGHT = 20
+    fill = (pct / 5) * BAR_LENGTH  # Calculate fill based on mana percentage.
+    outline_rect = pygame.Rect(x, y, BAR_LENGTH, BAR_HEIGHT)
+    fill_rect = pygame.Rect(x, y, fill, BAR_HEIGHT)
+    pygame.draw.rect(surface, (0, 0, 255), fill_rect)
+    pygame.draw.rect(surface, (255, 255, 255), outline_rect, 2)
+
 
 
 pygame.init()
@@ -124,6 +169,7 @@ player = pygame.sprite.GroupSingle()
 player.add(Player())
 
 obstacle_group = pygame.sprite.Group()
+projectile_group = pygame.sprite.Group()  # Group for projectiles
 
 sky_surface = pygame.image.load('graphics/hogwarts.png').convert()
 trivia_surface = pygame.image.load('graphics/trivia.png').convert()
@@ -186,6 +232,10 @@ while True:
 				obstacle_group.add(Obstacle(choice(['fly'])))
 				obstacle_count += 1
 				obstacle_lock = True
+			
+			if event.type == pygame.KEYDOWN:
+				if event.key == pygame.K_SPACE:
+					player.sprite.shoot()
 		
 		elif introduction_screen:
 			if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
@@ -238,6 +288,10 @@ while True:
 		player.draw(screen)
 		player.update()
 
+		draw_mana_bar(screen, 10, 10, player.sprite.mana)  # Draw the mana bar based 
+		player.sprite.regenerate_mana(0.02)  # Regenerate mana over time; adjust rate as needed.on current mana.
+
+
 		print(obstacle_count, obstacle_interval)
 
 		#update our timer with the score (maybe after every 10, it reduces by 100?)
@@ -248,6 +302,15 @@ while True:
 
 		obstacle_group.draw(screen)
 		obstacle_group.update()
+
+		projectile_group.draw(screen)
+		projectile_group.update()
+
+		# Handle collisions between projectiles and obstacles
+		pygame.sprite.groupcollide(projectile_group, obstacle_group, True, True)
+
+		pygame.display.update()
+		clock.tick(60)
 
 		game_active = collision_sprite()
 		if not game_active:
