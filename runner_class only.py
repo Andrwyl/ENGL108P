@@ -149,6 +149,17 @@ intro_line2 = "These creatures of sadness and despair are preying on all who com
 intro_line3 = "As all hope seems lost, and darkness seems destined to envelop all we know and love"
 intro_line4 = "The Boy Who Lived, Lightning, The Chosen One, comes soaring in fearlessly once more..."
 
+# Demented screen animation variables
+demented_index1 = 0
+demented_index2 = 0
+demented_index3 = 0
+demented_last_update = 0
+demented_interval = 150  # Adjust the speed of the text animation
+
+# Demented messages
+demented_line1 = "You have surrendered to the dementor's kiss..."
+demented_line2 = "You will now perish with your soul being snatched..."
+demented_line3 = "All of Hogwarts and the Wizarding World is at doom!"
 
 instructions_screen = False
 
@@ -247,7 +258,7 @@ while True:
 				trivia_screen = True
 				freeze_screen = False
 				obstacle_group.empty()
-
+		
 		elif trivia_screen:
 			if event.type == pygame.KEYDOWN and event.key == correct_key:
 				game_active = True
@@ -414,9 +425,54 @@ while True:
 		blit_text(" ".join(intro_line4.split()[:index4]),intro_font_15,255,255,255,(400,270))
 		blit_text("ENTER to continue",intro_font_15,255,255,255,(700,350))
 
-	
-	
-		
+	elif demented_screen:
+		screen.blit(introduction_surface,(0,0))
+
+		now = pygame.time.get_ticks()
+		if (now - demented_last_update > demented_interval):
+			if demented_index1 < len(demented_line1.split()):
+				demented_index1 += 1
+			elif demented_index2 < len(demented_line2.split()):
+				demented_index2 += 1
+			elif demented_index3 < len(demented_line3.split()):
+				demented_index3 += 1
+			demented_last_update = now
+
+		blit_text(" ".join(demented_line1.split()[:demented_index1]), intro_font_15, 255, 255, 255, (400, 150))
+		blit_text(" ".join(demented_line2.split()[:demented_index2]), intro_font_15, 255, 255, 255, (400, 190))
+		blit_text(" ".join(demented_line3.split()[:demented_index3]), intro_font_15, 255, 255, 255, (400, 230))
+		blit_text("Press Enter to Play Again", intro_font_15, 255, 255, 255, (650, 350))
+
+		for event in pygame.event.get():
+			if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
+				# Reset player's position and mana
+				player.sprite.rect.midbottom = (80, 300)  # Reset position
+				player.sprite.mana = player.sprite.max_mana  # Refill mana
+
+				# Clear obstacles and projectiles
+				obstacle_group.empty()
+				projectile_group.empty()
+
+				# Reset score and timers
+				score = 0
+				start_time = int(pygame.time.get_ticks() / 1000)  # Reset game start time
+				total_pause = 0  # Reset total pause time
+
+				# Reset obstacle spawn timing and counters
+				obstacle_interval = 1200  # Reset to initial obstacle spawn interval
+				obstacle_count = 0
+				pygame.time.set_timer(obstacle_timer, obstacle_interval)
+
+				# Reset any additional game state variables
+				game_active = False  # Or True, depending on your game's flow
+				introduction_screen = True  # Or another appropriate state
+				trivia_screen = False
+				demented_screen = False
+
+				# Reset the animation indexes for the demented screen
+				demented_index1 = 0
+				demented_index2 = 0
+				demented_index3 = 0
 	else:
 		screen.blit(start_screen, (0,0))
 		screen.blit(player_stand,player_stand_rect)
