@@ -39,9 +39,9 @@ class Player(pygame.sprite.Sprite):
 		#self.player_jump = pygame.image.load('graphics/player/jump.png').convert_alpha()
     def update(self):
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_w] and self.rect.top > 0:
+        if (keys[pygame.K_w] or keys[pygame.K_UP]) and self.rect.top > 0:
             self.rect.y -= 8
-        if keys[pygame.K_s] and self.rect.bottom < 400:
+        if (keys[pygame.K_s] or keys[pygame.K_DOWN])and self.rect.bottom < 400:
             self.rect.y += 8
         if keys[pygame.K_a] or keys[pygame.K_LEFT]:  # Move left
             self.rect.x -= 5  # Adjust speed as needed
@@ -134,6 +134,8 @@ game_active = False
 trivia_screen = False
 introduction_screen = True
 demented_screen = False
+controls_screen = False
+
 
 #this is to facilitate the animation onto the screen of the introduction story
 last_update = pygame.time.get_ticks()
@@ -163,6 +165,15 @@ demented_line3 = "All of Hogwarts and the Wizarding World is at doom!"
 
 instructions_screen = False
 
+controls_text_lines = [
+    "Controls:",
+    "Move Up: W or Up Arrow",
+    "Move Down: S or Down Arrow",
+    "Move Left: A or Left Arrow",
+    "Move Right: D or Right Arrow",
+    "Shoot: Spacebar",
+    "Press Enter to continue"
+]
 
 
 start_time = 0
@@ -252,6 +263,7 @@ while True:
 		elif introduction_screen:
 			if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
 				introduction_screen = False
+				controls_screen = True  # Transition to the controls screen
 
 		elif freeze_screen:
 			if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
@@ -259,6 +271,15 @@ while True:
 				freeze_screen = False
 				obstacle_group.empty()
 		
+		elif controls_screen:
+			if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
+				controls_screen = False
+		
+		elif demented_screen:
+			if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
+				demented_screen = False
+
+
 		elif trivia_screen:
 			if event.type == pygame.KEYDOWN and event.key == correct_key:
 				game_active = True
@@ -402,6 +423,25 @@ while True:
 		possible_keys = [pygame.K_a, pygame.K_b, pygame.K_c, pygame.K_d]
 		correct_key = curr_trivia_ans[-1] #by convention I'm storing the correct key that the user should press as the last element of the list
 		incorrect_keys = [key for key in possible_keys if key != correct_key]
+	
+	elif controls_screen:
+		screen.blit(introduction_surface,(0,0))
+
+		# Display each line of controls text on the left
+		for i, line in enumerate(controls_text_lines):
+			controls_message = intro_font_15.render(line, True, (255, 255, 255))
+			controls_message_rect = controls_message.get_rect(center=(800 // 3, 100 + i*30))
+			screen.blit(controls_message, controls_message_rect)
+
+		# Display the player sprite on the right
+		player_sprite_image = player.sprite.image
+		player_sprite_rect = player_sprite_image.get_rect(center=((800 // 3) * 2, 200))
+		screen.blit(player_sprite_image, player_sprite_rect)
+
+		for event in pygame.event.get():
+			if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
+				controls_screen = False
+
 	
 	elif introduction_screen:
 		screen.blit(introduction_surface,(0,0))
