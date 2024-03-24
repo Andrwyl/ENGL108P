@@ -268,6 +268,23 @@ while True:
 			elif event.type == pygame.KEYDOWN and event.key in incorrect_keys:
 				game_active = False
 				trivia_screen = False
+				introduction_screen = True  # Assuming you want to show the intro screen again
+
+				# Reset player's position and mana
+				player.sprite.rect.midbottom = (80, 300)  # Reset position
+				player.sprite.mana = player.sprite.max_mana  # Refill mana
+
+				# Reset the game timer
+				start_time = int(pygame.time.get_ticks() / 1000)
+				total_pause = 0  # Reset total pause time if you're using it
+
+				# Clear obstacles and projectiles
+				obstacle_group.empty()
+				projectile_group.empty()
+
+				# Additional resets as needed (e.g., score, obstacle timer, etc.)
+				score = 0
+				pygame.time.set_timer(obstacle_timer, 1200)  # Reset obstacle spawning timer, adjust as needed
 		
 		else:
 			if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
