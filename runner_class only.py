@@ -54,10 +54,10 @@ class Player(pygame.sprite.Sprite):
 
     # Method for shooting projectiles
     def shoot(self):
-        if self.mana > 0:
+        if self.mana == self.max_mana:
            projectile = Projectile(self.rect.midtop)
            projectile_group.add(projectile)
-           self.mana -= 1  # Decrease mana by 1 for each projectile shot
+           self.mana -= self.max_mana  # Decrease mana by 1 for each projectile shot
 	
 
     def regenerate_mana(self, regen_rate):
