@@ -310,7 +310,6 @@ while True:
 		pygame.sprite.groupcollide(projectile_group, obstacle_group, True, True)
 
 		pygame.display.update()
-		clock.tick(60)
 
 		game_active = collision_sprite()
 		if not game_active:
