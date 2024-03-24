@@ -166,14 +166,18 @@ demented_line3 = "All of Hogwarts and the Wizarding World is at doom!"
 instructions_screen = False
 
 controls_text_lines = [
-    "Controls:",
-    "Soar Upwards: W or Up Arrow",
-    "Descend Downards: S or Down Arrow",
-    "Pivot Left: A or Left Arrow",
-    "Pivot Right: D or Right Arrow",
-    "Expecto Patronus: Spacebar",
-    "Press Enter to continue"
+    ("Flight Mechanics", ""),
+    ("", ""),
+    ("Soar Upwards:", "W or Up Arrow"),
+    ("Descend Downwards:", "S or Down Arrow"),
+    ("Pivot Left:", "A or Left Arrow"),
+    ("Pivot Right:", "D or Right Arrow"),
+    ("Expecto Patronus:", "Spacebar"),
+    ("", ""),
+    ("", ""),
+    ("Press Enter to continue", "")
 ]
+
 
 
 start_time = 0
@@ -427,16 +431,29 @@ while True:
 	elif controls_screen:
 		screen.blit(introduction_surface,(0,0))
 
-		# Display each line of controls text on the left
-		for i, line in enumerate(controls_text_lines):
-			controls_message = intro_font_15.render(line, True, (255, 255, 255))
-			controls_message_rect = controls_message.get_rect(center=(800 // 3, 100 + i*30))
-			screen.blit(controls_message, controls_message_rect)
+		left_column_x = 800 // 3 - 100  # Adjust as needed for the control names
+		right_column_x = 800 // 3 + 150  # Adjust as needed for the control descriptions
+		y_start = 100
+		line_height = 30
 
-		# Display the player sprite on the right
+		for i, (control, description) in enumerate(controls_text_lines):
+			# Control names in the left column
+			control_message = intro_font_15.render(control, True, (255, 255, 255))
+			control_message_rect = control_message.get_rect(left=left_column_x, top=y_start + i*line_height)
+			screen.blit(control_message, control_message_rect)
+			
+			# Control descriptions in the right column
+			description_message = intro_font_15.render(description, True, (255, 255, 255))
+			description_message_rect = description_message.get_rect(left=right_column_x, top=y_start + i*line_height)
+			screen.blit(description_message, description_message_rect)
+
+
+		# Display the player sprite on the right, but more towards the edge of the screen
 		player_sprite_image = player.sprite.image
-		player_sprite_rect = player_sprite_image.get_rect(center=((800 // 3) * 2, 200))
+		# Adjust the position more to the right than before
+		player_sprite_rect = player_sprite_image.get_rect(center=(800 - 130, 200))  # 100 pixels from the right edge
 		screen.blit(player_sprite_image, player_sprite_rect)
+
 
 		for event in pygame.event.get():
 			if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
