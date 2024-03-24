@@ -282,6 +282,10 @@ while True:
 		elif demented_screen:
 			if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
 				demented_screen = False
+				demented_index1 = 0
+				demented_index2 = 0
+				demented_index3 = 0
+				
 
 
 		elif trivia_screen:
