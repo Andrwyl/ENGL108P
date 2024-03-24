@@ -133,6 +133,7 @@ freeze_screen = False
 game_active = False
 trivia_screen = False
 introduction_screen = True
+demented_screen = False
 
 #this is to facilitate the animation onto the screen of the introduction story
 last_update = pygame.time.get_ticks()
@@ -268,7 +269,7 @@ while True:
 			elif event.type == pygame.KEYDOWN and event.key in incorrect_keys:
 				game_active = False
 				trivia_screen = False
-				introduction_screen = True  # Assuming you want to show the intro screen again
+				demented_screen = True
 
 				# Reset player's position and mana
 				player.sprite.rect.midbottom = (80, 300)  # Reset position
