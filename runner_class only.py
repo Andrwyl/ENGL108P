@@ -167,11 +167,11 @@ instructions_screen = False
 
 controls_text_lines = [
     "Controls:",
-    "Move Up: W or Up Arrow",
-    "Move Down: S or Down Arrow",
-    "Move Left: A or Left Arrow",
-    "Move Right: D or Right Arrow",
-    "Shoot: Spacebar",
+    "Soar Upwards: W or Up Arrow",
+    "Descend Downards: S or Down Arrow",
+    "Pivot Left: A or Left Arrow",
+    "Pivot Right: D or Right Arrow",
+    "Expecto Patronus: Spacebar",
     "Press Enter to continue"
 ]
 
