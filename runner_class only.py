@@ -60,6 +60,7 @@ class Player(pygame.sprite.Sprite):
            projectile = Projectile(self.rect.midtop)
            projectile_group.add(projectile)
            self.mana -= self.max_mana  # Decrease mana by 1 for each projectile shot
+           spell_cast.play(loops=0)
 		   
 			   
 	
