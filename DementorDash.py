@@ -242,21 +242,6 @@ obstacle_timer = pygame.USEREVENT + 1
 
 
 
-
-#load in trivia questions here
-
-#NOTE: WHEN ADDING TRIVIA QUESTIONS MAKE SURE THEY'RE ALL AROUND THE SAME LENGTH TO ENSURE THEY ALL FIT. ALSO, WE SPLIT INTO 2 LINES BY '.' SO MAKE SURE THERE'S A PERIOD IN EACH QUESTION
-TRIVIA_QUESTIONS_POOL = {
-	"Harry Potter is remembered as a legendary seeker at Hogwarts. Select the number of snitches Harry caught while playing.": ["a) 5 snitches", "b) 2 snitches", "c) 7 snitches", "d) 1 snitch",
-	pygame.K_c],
-	"Harry Potter has used his broom in masterful ways to get out of tight situations. Select Harry's first broom.": ["a) The Bongo 45", "b) The Nimbus 2000", "c) The Demented Horror", "d) The Firebolt",
-	pygame.K_b],
-	"Harry famously ventured off to find Voldemort's Horcruxes. Select the object that is not a Horcrux." : ["a) Tom Riddle's Diary", "b) The Elder Wand", "c) The Diadem of Ravenclaw", "d) Marvolo Gaunt's Ring",
-																															  pygame.K_b],
-
-}  #we keep this as a constant, since every time we use a question we remove it from the dict in order to prevent repeating questions. When we run out of questions we reload all questions to prevent crash
-
-
 TRIVIA_QUESTIONS_POOL = {
     "Harry Potter is remembered as a legendary seeker at Hogwarts. Select the number of snitches Harry caught while playing.": ["a) 5 snitches", "b) 2 snitches", "c) 7 snitches", "d) 1 snitch", pygame.K_c],
     "Harry Potter has used his broom in masterful ways to get out of tight situations. Select Harry's first broom.": ["a) The Bongo 45", "b) The Nimbus 2000", "c) The Demented Horror", "d) The Firebolt", pygame.K_b],
