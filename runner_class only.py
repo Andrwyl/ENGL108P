@@ -92,7 +92,7 @@ class Obstacle(pygame.sprite.Sprite):
 
 def display_score():
 	current_time = int(pygame.time.get_ticks() / 1000) - start_time - total_pause + score_from_collisions
-	score_surf = test_font.render(f'Score: {current_time}',False,(64,64,64))
+	score_surf = test_font.render(f'Score: {current_time}',False,(255,255,255))
 	score_rect = score_surf.get_rect(center = (400,50))
 	screen.blit(score_surf,score_rect)
 	return current_time
@@ -107,10 +107,14 @@ def draw_mana_bar(surface, x, y, pct):
     BAR_LENGTH = 100
     BAR_HEIGHT = 20
     fill = (pct / 5) * BAR_LENGTH  # Calculate fill based on mana percentage.
+    greyish_blue = (115, 147, 179)  # Adjust the RGB values to get the desired shade
+    
     outline_rect = pygame.Rect(x, y, BAR_LENGTH, BAR_HEIGHT)
     fill_rect = pygame.Rect(x, y, fill, BAR_HEIGHT)
-    pygame.draw.rect(surface, (0, 0, 255), fill_rect)
-    pygame.draw.rect(surface, (255, 255, 255), outline_rect, 2)
+    
+    pygame.draw.rect(surface, greyish_blue, fill_rect)  # Use greyish blue for the fill
+    pygame.draw.rect(surface, (255, 255, 255), outline_rect, 2)  # White outline remains the same
+
 
 
 
@@ -123,6 +127,7 @@ magic_font_30 = pygame.font.Font('font/witches-magic.ttf', 30)
 magic_font_10 = pygame.font.Font('font/witches-magic.ttf', 10)
 magic_font_20 = pygame.font.Font('font/witches-magic.ttf', 18)
 magic_font_40 = pygame.font.Font('font/witches-magic.ttf', 40)
+magic_font_60 = pygame.font.Font('font/witches-magic.ttf', 60)
 
 intro_font_15 = pygame.font.Font('font/introfont.ttf', 15)
 
@@ -211,15 +216,18 @@ trivia_surface = pygame.image.load('graphics/trivia.png').convert()
 introduction_surface = pygame.image.load('graphics/introduction.png')
 
 # Intro screen
-player_stand = pygame.image.load('graphics/player/player_stand.png').convert_alpha()
+player_stand = pygame.image.load('graphics/player/harry_standing.png').convert_alpha()
 player_stand = pygame.transform.rotozoom(player_stand,0,2)
 player_stand_rect = player_stand.get_rect(center = (400,200))
 
-game_name = test_font.render('Harry Potter\'s Dementor Dash',False,(111,196,169))
-game_name_rect = game_name.get_rect(center = (400,80))
 
-game_message = test_font.render('Press space to fly!',False,(111,196,169))
-game_message_rect = game_message.get_rect(center = (400,330))
+game_name = magic_font_40.render('Harry Potter\'s Dementor Dash', True, (255, 255, 255))  # True for anti-aliased text
+game_name_rect = game_name.get_rect(center=(400, 80))
+
+# Render the game instruction message with white color and improved font
+game_message = magic_font_30.render('Press space to fly!', True, (255, 255, 255))
+game_message_rect = game_message.get_rect(center=(400, 330))
+
 
 start_screen = pygame.image.load('graphics/start_screen.png').convert()
 
@@ -452,13 +460,22 @@ while True:
 
 		#game over text
 
-		dead_message = magic_font_30.render("PRESS ENTER TO SAME HIM FROM THE KISS!",True,(255,255,255))
-		dead_message_rect = dead_message.get_rect(center = (400,40))
-		screen.blit(dead_message, dead_message_rect)
+		background_rect = pygame.Rect(0, 0, 800, 400)  # Cover the entire screen
+		background_surface = pygame.Surface((800, 400))  # Create a surface to draw on
+		background_surface.set_alpha(128)  # Semi-transparent
+		background_surface.fill((0, 0, 0))  # Black background
+		screen.blit(background_surface, background_rect)
 
-		you_died = magic_font_40.render("HARRY GOT CAUGHT!",True,(255,255,255))
-		you_died_rect = you_died.get_rect(center = (400,200))
-		screen.blit(you_died,you_died_rect)
+
+		# Render "HARRY GOT CAUGHT!" message
+		you_died = magic_font_40.render("HARRY GOT CAUGHT!", True, (255, 255, 255))
+		you_died_rect = you_died.get_rect(center=(400, 200))
+		screen.blit(you_died, you_died_rect)
+		
+		# Render "PRESS ENTER TO SAVE HIM FROM THE KISS!" message
+		dead_message = magic_font_30.render("PRESS ENTER TO SAVE HIM FROM THE KISS!", True, (255, 255, 255))
+		dead_message_rect = dead_message.get_rect(center=(400, 150))
+		screen.blit(dead_message, dead_message_rect)
 		
 
 
