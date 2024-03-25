@@ -188,6 +188,8 @@ score = 0
 
 typing_sound = pygame.mixer.Sound('audio/typewriting-text.mp3')
 title_bg = pygame.mixer.Sound('audio/title_screen.mp3')
+fighting_music = pygame.mixer.Sound('audio/fighting_music.mp3')
+fighting_music.set_volume(0.6)
 
 typing_sound.play(loops=-1)
 
@@ -300,6 +302,8 @@ while True:
 		elif trivia_screen:
 			if event.type == pygame.KEYDOWN and event.key == correct_key:
 				game_active = True
+				fighting_music.play(loops=-1)
+
 				trivia_screen = False
 				if len(trivia_questions) == 0:
 					trivia_questions = deepcopy(TRIVIA_QUESTIONS_POOL)
@@ -342,6 +346,7 @@ while True:
 			if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
 				title_bg.stop()
 				game_active = True
+				fighting_music.play(loops=-1)
 				start_time = int(pygame.time.get_ticks() / 1000)
 				total_pause = 0
 
@@ -384,6 +389,7 @@ while True:
 		game_active = collision_sprite()
 		if not game_active:
 
+			fighting_music.stop()
 			freeze_screen = True
 			pause_start = pygame.time.get_ticks()  #start the pause timer
 	
@@ -449,7 +455,7 @@ while True:
 
 		left_column_x = 800 // 3 - 100  # Adjust as needed for the control names
 		right_column_x = 800 // 3 + 150  # Adjust as needed for the control descriptions
-		y_start = 100
+		y_start = 75
 		line_height = 30
 
 		for i, (control, description) in enumerate(controls_text_lines):
@@ -544,6 +550,7 @@ while True:
 
 				# Reset any additional game state variables
 				game_active = False  # Or True, depending on your game's flow
+
 				introduction_screen = True  # Or another appropriate state
 				trivia_screen = False
 				demented_screen = False
