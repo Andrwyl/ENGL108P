@@ -19,7 +19,7 @@ class Projectile(pygame.sprite.Sprite):
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        player_walk_1 = pygame.image.load('graphics/player/player_walk_1.png').convert_alpha()
+        player_walk_1 = pygame.image.load('graphics/player/Harry1.png').convert_alpha()
         player_walk_2 = pygame.image.load('graphics/player/player_walk_2.png').convert_alpha()
         self.player_walk = [player_walk_1, player_walk_2]
         self.image = self.player_walk[0]
@@ -339,7 +339,6 @@ while True:
 				projectile_group.empty()
 
 				# Additional resets as needed (e.g., score, obstacle timer, etc.)
-				score = 0
 				pygame.time.set_timer(obstacle_timer, 1200)  # Reset obstacle spawning timer, adjust as needed
 		
 		else:
@@ -509,6 +508,12 @@ while True:
 
 	elif demented_screen:
 		screen.blit(introduction_surface,(0,0))
+
+
+		score_text = f"Score: {score}"  # Assuming `score` holds the final score
+		score_surf = intro_font_15.render(score_text, True, (255, 255, 255))  # Create a surface with the score text
+		score_rect = score_surf.get_rect(topleft=(10, 10))  # Define the position for the score
+		screen.blit(score_surf, score_rect)  # Blit the text surface to the screen
 
 		now = pygame.time.get_ticks()
 		if (now - demented_last_update > demented_interval):
