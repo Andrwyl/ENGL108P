@@ -311,11 +311,39 @@ while True:
 				demented_index2 = 0
 				demented_index3 = 0
 				typing_sound.stop()
+
+				# Reset player's position and mana
+				player.sprite.rect.midbottom = (80, 300)  # Reset position
+				player.sprite.mana = player.sprite.max_mana  # Refill mana
+
+				# Clear obstacles and projectiles
+				obstacle_group.empty()
+				projectile_group.empty()
+
+				# Reset score and timers
 				score = 0
+				start_time = int(pygame.time.get_ticks() / 1000)  # Reset game start time
+				total_pause = 0  # Reset total pause time
+
+				# Reset obstacle spawn timing and counters
+				obstacle_interval = 1200  # Reset to initial obstacle spawn interval
+				obstacle_count = 0
+				pygame.time.set_timer(obstacle_timer, obstacle_interval)
+
+				# Reset any additional game state variables
+				game_active = False
+
+				introduction_screen = False  # Or another appropriate state
+				trivia_screen = False
 
 
-				title_bg.play(loops=-1)
-				
+				# Reset the animation indexes for the demented screen
+				demented_index1 = 0
+				demented_index2 = 0
+				demented_index3 = 0
+
+
+				title_bg.play(loops=-1)				
 
 
 		elif trivia_screen:
@@ -557,37 +585,7 @@ while True:
 		blit_text(" ".join(demented_line3.split()[:demented_index3]), intro_font_15, 255, 255, 255, (400, 230))
 		blit_text("Press Enter to Play Again", intro_font_15, 255, 255, 255, (650, 350))
 
-		for event in pygame.event.get():
-			if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
-				# Reset player's position and mana
-				player.sprite.rect.midbottom = (80, 300)  # Reset position
-				player.sprite.mana = player.sprite.max_mana  # Refill mana
-
-				# Clear obstacles and projectiles
-				obstacle_group.empty()
-				projectile_group.empty()
-
-				# Reset score and timers
-				score = 0
-				start_time = int(pygame.time.get_ticks() / 1000)  # Reset game start time
-				total_pause = 0  # Reset total pause time
-
-				# Reset obstacle spawn timing and counters
-				obstacle_interval = 1200  # Reset to initial obstacle spawn interval
-				obstacle_count = 0
-				pygame.time.set_timer(obstacle_timer, obstacle_interval)
-
-				# Reset any additional game state variables
-				game_active = False  # Or True, depending on your game's flow
-
-				introduction_screen = False  # Or another appropriate state
-				trivia_screen = False
-				demented_screen = False
-
-				# Reset the animation indexes for the demented screen
-				demented_index1 = 0
-				demented_index2 = 0
-				demented_index3 = 0
+		
 	else:
 		screen.blit(start_screen, (0,0))
 		screen.blit(player_stand,player_stand_rect)
