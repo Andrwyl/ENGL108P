@@ -7,7 +7,7 @@ from copy import deepcopy
 class Projectile(pygame.sprite.Sprite):
     def __init__(self, pos):
         super().__init__()
-        self.image = patronum = pygame.image.load('graphics\expectopatronum.png').convert_alpha()  # Define the size of the projectile
+        self.image = patronum = pygame.image.load('graphics\expectopatronum2.png').convert_alpha()  # Define the size of the projectile
         self.rect = self.image.get_rect(center=pos)
         
     def update(self):
@@ -70,10 +70,10 @@ class Obstacle(pygame.sprite.Sprite):
     def __init__(self, type):
         super().__init__()
         if type == 'fly':
-            fly_1 = pygame.image.load('graphics/fly/dementor1.png').convert_alpha()
-            fly_2 = pygame.image.load('graphics/fly/dementor2.png').convert_alpha()
+            fly_1 = pygame.image.load('graphics/fly/dementor_final.png').convert_alpha()
+            fly_2 = pygame.image.load('graphics/fly/dementor_final.png').convert_alpha()
             self.frames = [fly_1, fly_2]
-            y_pos = randint(50, 350)
+            y_pos = randint(90, 310)
         self.animation_index = 0
         self.image = self.frames[self.animation_index]
         self.rect = self.image.get_rect(midbottom=(randint(900, 1100), y_pos))
