@@ -159,8 +159,8 @@ demented_last_update = 0
 demented_interval = 150  # Adjust the speed of the text animation
 
 # Demented messages
-demented_line1 = "You have surrendered to the dementor's kiss..."
-demented_line2 = "You will now perish with your soul being snatched..."
+demented_line1 = "Harry has surrendered to the dementor's kiss..."
+demented_line2 = "The boy who lived will perish, his soul snatched..."
 demented_line3 = "All of Hogwarts and the Wizarding World is at doom!"
 
 instructions_screen = False
@@ -185,7 +185,12 @@ pause_start = 0
 pause_end = 0
 total_pause = 0
 score = 0
-bg_music = pygame.mixer.Sound('audio/music.wav')
+
+typing_sound = pygame.mixer.Sound('audio/typewriting-text.mp3')
+title_bg = pygame.mixer.Sound('audio/title_screen.mp3')
+
+typing_sound.play(loops=-1)
+
 #bg_music.play(loops = -1)
 
 
@@ -267,6 +272,7 @@ while True:
 		elif introduction_screen:
 			if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
 				introduction_screen = False
+				typing_sound.stop()
 				controls_screen = True  # Transition to the controls screen
 
 		elif freeze_screen:
@@ -278,6 +284,7 @@ while True:
 		elif controls_screen:
 			if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
 				controls_screen = False
+				title_bg.play(loops=-1)
 		
 		elif demented_screen:
 			if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
@@ -285,6 +292,8 @@ while True:
 				demented_index1 = 0
 				demented_index2 = 0
 				demented_index3 = 0
+				typing_sound.stop()
+				title_bg.play(loops=-1)
 				
 
 
@@ -311,6 +320,8 @@ while True:
 				trivia_screen = False
 				demented_screen = True
 
+				typing_sound.play(loops = -1)
+
 				# Reset player's position and mana
 				player.sprite.rect.midbottom = (80, 300)  # Reset position
 				player.sprite.mana = player.sprite.max_mana  # Refill mana
@@ -329,6 +340,7 @@ while True:
 		
 		else:
 			if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+				title_bg.stop()
 				game_active = True
 				start_time = int(pygame.time.get_ticks() / 1000)
 				total_pause = 0
@@ -479,6 +491,9 @@ while True:
 				index4 += 1
 			last_update = now
 
+		if index4 == len(intro_line4.split()):
+			typing_sound.stop()
+
 				
 		blit_text(" ".join(intro_line1.split()[:index1]),intro_font_15,255,255,255,(400,150))
 		blit_text(" ".join(intro_line2.split()[:index2]),intro_font_15,255,255,255,(400,190))
@@ -498,6 +513,9 @@ while True:
 			elif demented_index3 < len(demented_line3.split()):
 				demented_index3 += 1
 			demented_last_update = now
+		
+		if demented_index3 == len(demented_line3.split()):
+			typing_sound.stop()
 
 		blit_text(" ".join(demented_line1.split()[:demented_index1]), intro_font_15, 255, 255, 255, (400, 150))
 		blit_text(" ".join(demented_line2.split()[:demented_index2]), intro_font_15, 255, 255, 255, (400, 190))
