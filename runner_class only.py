@@ -241,6 +241,21 @@ TRIVIA_QUESTIONS_POOL = {
 
 }  #we keep this as a constant, since every time we use a question we remove it from the dict in order to prevent repeating questions. When we run out of questions we reload all questions to prevent crash
 
+
+TRIVIA_QUESTIONS_POOL = {
+    "Harry Potter is remembered as a legendary seeker at Hogwarts. Select the number of snitches Harry caught while playing.": ["a) 5 snitches", "b) 2 snitches", "c) 7 snitches", "d) 1 snitch", pygame.K_c],
+    "Harry Potter has used his broom in masterful ways to get out of tight situations. Select Harry's first broom.": ["a) The Bongo 45", "b) The Nimbus 2000", "c) The Demented Horror", "d) The Firebolt", pygame.K_b],
+    "Harry famously ventured off to find Voldemort's Horcruxes. Select the object that is not a Horcrux.": ["a) Tom Riddle's Diary", "b) The Elder Wand", "c) The Diadem of Ravenclaw", "d) Marvolo Gaunt's Ring", pygame.K_b],
+    "In the Triwizard Tournament, Harry faced a dragon. Select the breed of dragaon": ["a) Hungarian Horntail", "b) Chinese Fireball", "c) Swedish Short-Snout", "d) Norwegian Ridgeback", pygame.K_a],
+    "Harry uses a famous spell to disarm an opponent. Select that spell.": ["a) Expelliarmus", "b) Levicorpus", "c) Stupefy", "d) Incendio", pygame.K_a],
+    "Wizard Chess is a game of bravery and intelligence. Select the person who taught Harry chess.": ["a) Hermione Granger", "b) Ron Weasley", "c) Draco Malfoy", "d) Neville Longbottom", pygame.K_b],
+    "The second text had Harry save people underwater. Select the potion Harry takes to survive underwater in the Triwizard Tournament": ["a) Polyjuice Potion", "b) Felix Felicis", "c) Gillyweed", "d) Amortentia", pygame.K_c],
+    "In the Deathly Hallows, Harry learns about the three hallows. Select the items which are NOT hallows.": ["a) The Elder Wand", "b) The Resurrection Stone", "c) The Cloak of Invisibility", "d) The Philosopher's Stone", pygame.K_d],
+    "Every person has a unique patronus. Tell us what Hermione's patronus takes the form of.": ["a) Otter", "b) Hare", "c) Cat", "d) Doe", pygame.K_a],
+    "The Order of The Phoenix was an anti death eater group. Tell us who was not in the Order.": ["a) Severus Snape", "b) Dolores Umbridge", "c) Sirius Black", "d) Remus Lupin", pygame.K_b],
+}
+
+
 trivia_questions = deepcopy(TRIVIA_QUESTIONS_POOL)
  
 curr_trivia_question, curr_trivia_ans = choice(list(trivia_questions.items())) #refresh this after every trivia question is answered to get a new one
