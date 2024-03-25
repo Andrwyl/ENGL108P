@@ -216,7 +216,7 @@ trivia_surface = pygame.image.load('graphics/trivia.png').convert()
 introduction_surface = pygame.image.load('graphics/introduction.png')
 
 # Intro screen
-player_stand = pygame.image.load('graphics/player/harry_standing.png').convert_alpha()
+player_stand = pygame.image.load('graphics/player/dementor_png.png').convert_alpha()
 player_stand = pygame.transform.rotozoom(player_stand,0,2)
 player_stand_rect = player_stand.get_rect(center = (400,200))
 
@@ -543,11 +543,6 @@ while True:
 		# Adjust the position more to the right than before
 		player_sprite_rect = player_sprite_image.get_rect(center=(800 - 130, 200))  # 100 pixels from the right edge
 		screen.blit(player_sprite_image, player_sprite_rect)
-
-
-		for event in pygame.event.get():
-			if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
-				controls_screen = False
 
 	
 	elif introduction_screen:
