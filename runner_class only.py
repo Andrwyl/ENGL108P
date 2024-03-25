@@ -51,12 +51,17 @@ class Player(pygame.sprite.Sprite):
             if self.rect.right > 800:  # Assuming screen width is 800
                 self.rect.right = 800
 
+
+
+
     # Method for shooting projectiles
     def shoot(self):
         if self.mana == self.max_mana:
            projectile = Projectile(self.rect.midtop)
            projectile_group.add(projectile)
            self.mana -= self.max_mana  # Decrease mana by 1 for each projectile shot
+		   
+			   
 	
 
     def regenerate_mana(self, regen_rate):
@@ -78,13 +83,8 @@ class Obstacle(pygame.sprite.Sprite):
         self.image = self.frames[self.animation_index]
         self.rect = self.image.get_rect(midbottom=(randint(900, 1100), y_pos))
 
-    def animation_state(self):
-        self.animation_index += 0.1
-        if self.animation_index >= len(self.frames): self.animation_index = 0
-        self.image = self.frames[int(self.animation_index)]
 
     def update(self):
-        self.animation_state()
         self.rect.x -= 6
         if self.rect.x <= -100:
             self.kill()
@@ -196,6 +196,11 @@ typing_sound = pygame.mixer.Sound('audio/typewriting-text.mp3')
 title_bg = pygame.mixer.Sound('audio/title_screen.mp3')
 fighting_music = pygame.mixer.Sound('audio/fighting_music.mp3')
 fighting_music.set_volume(0.6)
+
+spell_cast = pygame.mixer.Sound('audio/expectopatronum.mp3')
+spell_cast.set_volume(0.3)
+dementor_death = pygame.mixer.Sound('audio/dementor_death.mp3')
+dementor_death.set_volume(0.1)
 
 typing_sound.play(loops=-1)
 
@@ -441,6 +446,7 @@ while True:
 		
 		# Update score based on the number of obstacles hit
 		if collisions:
+			dementor_death.play(loops=0)
 			for collided_obstacles in collisions.values():
 				score_from_collisions += (len(collided_obstacles) * 5)  # Increase score by the number of obstacles hit
 		
