@@ -311,6 +311,9 @@ while True:
 				demented_index2 = 0
 				demented_index3 = 0
 				typing_sound.stop()
+				score = 0
+
+
 				title_bg.play(loops=-1)
 				
 
@@ -403,7 +406,7 @@ while True:
 		# Update score based on the number of obstacles hit
 		if collisions:
 			for collided_obstacles in collisions.values():
-				score_from_collisions += len(collided_obstacles)  # Increase score by the number of obstacles hit
+				score_from_collisions += (len(collided_obstacles) * 5)  # Increase score by the number of obstacles hit
 		
 
 		game_active = collision_sprite()
@@ -577,7 +580,7 @@ while True:
 				# Reset any additional game state variables
 				game_active = False  # Or True, depending on your game's flow
 
-				introduction_screen = True  # Or another appropriate state
+				introduction_screen = False  # Or another appropriate state
 				trivia_screen = False
 				demented_screen = False
 
