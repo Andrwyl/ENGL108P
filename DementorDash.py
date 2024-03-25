@@ -264,8 +264,8 @@ TRIVIA_QUESTIONS_POOL = {
     "In the Triwizard Tournament, Harry faced a dragon. Select the breed of dragaon": ["a) Hungarian Horntail", "b) Chinese Fireball", "c) Swedish Short-Snout", "d) Norwegian Ridgeback", pygame.K_a],
     "Harry uses a famous spell to disarm an opponent. Select that spell.": ["a) Expelliarmus", "b) Levicorpus", "c) Stupefy", "d) Incendio", pygame.K_a],
     "Wizard Chess is a game of bravery and intelligence. Select the person who taught Harry chess.": ["a) Hermione Granger", "b) Ron Weasley", "c) Draco Malfoy", "d) Neville Longbottom", pygame.K_b],
-    "The second text had Harry save people underwater. Select the potion Harry takes to survive underwater in the Triwizard Tournament": ["a) Polyjuice Potion", "b) Felix Felicis", "c) Gillyweed", "d) Amortentia", pygame.K_c],
-    "In the Deathly Hallows, Harry learns about the three hallows. Select the items which are NOT hallows.": ["a) The Elder Wand", "b) The Resurrection Stone", "c) The Cloak of Invisibility", "d) The Philosopher's Stone", pygame.K_d],
+    "The second test had Harry save people underwater. Select the potion Harry takes to survive underwater in the Triwizard Tournament": ["a) Polyjuice Potion", "b) Felix Felicis", "c) Gillyweed", "d) Amortentia", pygame.K_c],
+    "In his last year, Harry learns about the three hallows. Select the items which are NOT hallows.": ["a) The Elder Wand", "b) The Resurrection Stone", "c) The Cloak of Invisibility", "d) The Philosopher's Stone", pygame.K_d],
     "Every person has a unique patronus. Tell us what Hermione's patronus takes the form of.": ["a) Otter", "b) Hare", "c) Cat", "d) Doe", pygame.K_a],
     "The Order of The Phoenix was an anti death eater group. Tell us who was not in the Order.": ["a) Severus Snape", "b) Dolores Umbridge", "c) Sirius Black", "d) Remus Lupin", pygame.K_b],
 }
@@ -428,8 +428,6 @@ while True:
 		player.sprite.regenerate_mana(0.02)  # Regenerate mana over time; adjust rate as needed.on current mana.
 
 
-		print(obstacle_count, obstacle_interval)
-
 		#update our timer with the score (maybe after every 10, it reduces by 100?)
 		if obstacle_count % 10 == 0 and obstacle_interval > 500 and obstacle_lock:
 			obstacle_interval -= 100
@@ -493,6 +491,24 @@ while True:
 		screen.blit(trivia_surface, (0,0))
 		trivia_message = magic_font_30.render("Answer Correctly to Save Harry!",True,(255,255,255))
 		trivia_message_rect = trivia_message.get_rect(center = (400,50))
+
+
+		# Adding tip bar text on the trivia screen
+		tip_messages = [
+			"Press [A] for Option A",
+			"Press [B] for Option B",
+			"Press [C] for Option C",
+			"Press [D] for Option D"
+		]
+
+		# Calculate starting y position for the tips, assuming a margin
+		tip_start_y = 10
+		tip_line_height = 20  # Space between lines
+
+		for i, message in enumerate(tip_messages):
+			tip_text = magic_font_10.render(message, True, (255, 255, 255))
+			tip_text_rect = tip_text.get_rect(topright=(790, tip_start_y + i * tip_line_height))
+			screen.blit(tip_text, tip_text_rect)
 
 		#For readability, split the question into 2 (deliminator is '.') and have them on separate lines (trivia_question_1 and 2)
 		trivia_question_1 = magic_font_20.render(curr_trivia_question.split('.')[0]+'.',True,(255,255,255))
