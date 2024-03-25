@@ -7,7 +7,7 @@ from copy import deepcopy
 class Projectile(pygame.sprite.Sprite):
     def __init__(self, pos):
         super().__init__()
-        self.image = patronum = pygame.image.load('graphics\expectopatronum2.png').convert_alpha()  # Define the size of the projectile
+        self.image = pygame.image.load('graphics\expectopatronum2.png').convert_alpha()  # Define the size of the projectile
         self.rect = self.image.get_rect(center=pos)
         
     def update(self):
