@@ -19,7 +19,7 @@ class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         player_walk_1 = pygame.image.load('graphics/player/Harry1.png').convert_alpha()
-        player_walk_2 = pygame.image.load('graphics/player/player_walk_2.png').convert_alpha()
+        player_walk_2 = pygame.image.load('graphics/player/Harry1.png').convert_alpha()
         self.player_walk = [player_walk_1, player_walk_2]
         self.image = self.player_walk[0]
         self.rect = self.image.get_rect(midbottom=(80, 300))
@@ -91,7 +91,7 @@ class Obstacle(pygame.sprite.Sprite):
 
 
 def display_score():
-	current_time = int(pygame.time.get_ticks() / 1000) - start_time - total_pause
+	current_time = int(pygame.time.get_ticks() / 1000) - start_time - total_pause + score_from_collisions
 	score_surf = test_font.render(f'Score: {current_time}',False,(64,64,64))
 	score_rect = score_surf.get_rect(center = (400,50))
 	screen.blit(score_surf,score_rect)
@@ -184,6 +184,8 @@ pause_start = 0
 pause_end = 0
 total_pause = 0
 score = 0
+
+score_from_collisions = 0
 
 typing_sound = pygame.mixer.Sound('audio/typewriting-text.mp3')
 title_bg = pygame.mixer.Sound('audio/title_screen.mp3')
@@ -359,6 +361,7 @@ while True:
 			if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
 				title_bg.stop()
 				game_active = True
+				score_from_collisions = 0
 				fighting_music.play(loops=-1)
 				start_time = int(pygame.time.get_ticks() / 1000)
 				total_pause = 0
@@ -395,9 +398,13 @@ while True:
 		projectile_group.update()
 
 		# Handle collisions between projectiles and obstacles
-		pygame.sprite.groupcollide(projectile_group, obstacle_group, True, True)
-
-		pygame.display.update()
+		collisions = pygame.sprite.groupcollide(projectile_group, obstacle_group, True, True)
+		
+		# Update score based on the number of obstacles hit
+		if collisions:
+			for collided_obstacles in collisions.values():
+				score_from_collisions += len(collided_obstacles)  # Increase score by the number of obstacles hit
+		
 
 		game_active = collision_sprite()
 		if not game_active:
