@@ -132,7 +132,7 @@ magic_font_60 = pygame.font.Font('font/witches-magic.ttf', 60)
 
 intro_font_15 = pygame.font.Font('font/introfont.ttf', 15)
 
-window_icon = pygame.image.load('appicon.png')
+window_icon = pygame.image.load('graphics/appicon.png')
 pygame.display.set_icon(window_icon)
 
 
