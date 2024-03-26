@@ -11,7 +11,7 @@ class Projectile(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=pos)
         
     def update(self):
-        self.rect.x += 10  # Speed of the projectile
+        self.rect.x += 13  # Speed of the projectile
         if self.rect.x > 800:  # Remove the projectile if it goes beyond the screen
             self.kill()
 
@@ -79,14 +79,14 @@ class Obstacle(pygame.sprite.Sprite):
             fly_1 = pygame.image.load('graphics/fly/dementor_final.png').convert_alpha()
             fly_2 = pygame.image.load('graphics/fly/dementor_final.png').convert_alpha()
             self.frames = [fly_1, fly_2]
-            y_pos = randint(90, 310)
+            y_pos = randint(90, 400)
         self.animation_index = 0
         self.image = self.frames[self.animation_index]
         self.rect = self.image.get_rect(midbottom=(randint(900, 1100), y_pos))
 
 
     def update(self):
-        self.rect.x -= 6
+        self.rect.x -= 7
         if self.rect.x <= -100:
             self.kill()
 
@@ -131,6 +131,9 @@ magic_font_40 = pygame.font.Font('font/witches-magic.ttf', 40)
 magic_font_60 = pygame.font.Font('font/witches-magic.ttf', 60)
 
 intro_font_15 = pygame.font.Font('font/introfont.ttf', 15)
+
+window_icon = pygame.image.load('appicon.png')
+pygame.display.set_icon(window_icon)
 
 
 #screen state variables
