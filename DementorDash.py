@@ -362,7 +362,7 @@ while True:
 
 
 
-				#calculate the amount of time we spent waiting so the score is not crazy as shit
+				#calculate the amount of time we spent waiting so the score is not crazy
 				pause_end = pygame.time.get_ticks()
 				total_pause += int((pause_end - pause_start) / 1000)
 				pause_end = 0 #reset our timer variables
