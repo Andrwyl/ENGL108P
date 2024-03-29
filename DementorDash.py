@@ -154,8 +154,8 @@ index2 = 0
 index3 = 0
 index4 = 0
 
-intro_line1 = "The rumblings have been true.. the Dementors of Azkaban have lost control again!"
-intro_line2 = "These creatures of sadness and despair are preying on all who come in their way.."
+intro_line1 = "The rumblings have been true... the Dementors of Azkaban have lost control again!"
+intro_line2 = "These creatures of sadness and despair are preying on all who come in their way..."
 intro_line3 = "As all hope seems lost, and darkness seems destined to envelop all we know and love"
 intro_line4 = "The Boy Who Lived, Lightning, The Chosen One, comes soaring in fearlessly once more..."
 
