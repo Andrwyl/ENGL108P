@@ -180,7 +180,7 @@ controls_text_lines = [
     ("Descend Downwards:", "S or Down Arrow"),
     ("Pivot Left:", "A or Left Arrow"),
     ("Pivot Right:", "D or Right Arrow"),
-    ("Expecto Patronus:", "Spacebar"),
+    ("Expecto Patronum:", "Spacebar"),
     ("", ""),
     ("", ""),
     ("Press Enter to continue", "")
